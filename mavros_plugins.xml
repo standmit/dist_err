@@ -1,0 +1,5 @@
+<library path="libdist_err_plugins">
+    <class name="dist_err" type="dist_err::plugins::DistErrPlugin" base_class_type="mavros::plugin::PluginBase">
+        <description>Plugin for orientation error demonstating</description>
+    </class>
+</library>

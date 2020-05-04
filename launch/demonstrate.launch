@@ -1,0 +1,58 @@
+<launch>
+
+    <arg name="FCU_addr" value="127.0.0.2:14552" />
+    <arg name="client_addr" value="127.0.0.1:14553" />
+    <arg name="system_id" value="1" />
+    <arg name="FCU_comp_id" value="1" />
+    <arg name="client_comp_id" value="254" />
+    <arg name="sensor_id" value="0" />
+
+    <node name="FCU" pkg="mavros" type="mavros_node" required="true">
+        <param name="fcu_url" value="udp://$(arg FCU_addr)@$(arg client_addr)" />
+        <param name="gcs_url" value="udp://:14556@" />
+        <param name="system_id" value="$(arg system_id)" />
+        <param name="component_id" value="$(arg FCU_comp_id)" />
+        <param name="target_system_id" value="$(arg system_id)" />
+        <param name="target_component_id" value="$(arg client_comp_id)" />
+
+        <rosparam subst_value="true">
+            plugin_blacklist: []
+            plugin_whitelist:
+                - dist_err
+
+            dist_err:
+                sensor_id: $(arg sensor_id)
+        </rosparam>
+    </node>
+
+    <node name="client" pkg="mavros" type="mavros_node" required="true">
+        <param name="fcu_url" value="udp://$(arg client_addr)@$(arg FCU_addr)" />
+        <param name="system_id" value="$(arg system_id)" />
+        <param name="component_id" value="$(arg client_comp_id)" />
+        <param name="target_system_id" value="$(arg system_id)" />
+        <param name="target_component_id" value="$(arg FCU_comp_id)" />
+
+        <rosparam subst_value="true">
+            plugin_blacklist: []
+            plugin_whitelist:
+                - command
+                - distance_sensor
+                - sys_status
+
+            distance_sensor:
+                rf_down:
+                    subscriber: false
+                    id: $(arg sensor_id)
+                    field_of_view: 0.02
+                    frame_id: "rf_down"
+                    send_tf: true
+                    sensor_position:
+                        x: 0.0
+                        y: 0.11
+                        z: -0.06
+        </rosparam>
+    </node>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find dist_err)/view_TF.rviz" required="true" />
+
+</launch>

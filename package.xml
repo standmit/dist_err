@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dist_err</name>
+  <version>0.0.1</version>
+  <description>Package for demonstating error in distance sensor orientation</description>
+
+  <maintainer email="standmit@zabstrannik.ru">Andrey Stepanov</maintainer>
+
+  <license>MIT</license>
+
+  <url type="website">https://github.com/mavlink/mavros/issues/1400</url>
+
+  <author email="standmit@zabstrannik.ru">Andrey Stepanov</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>mavlink</depend>
+  <depend>mavros</depend>
+  <depend>pluginlib</depend>
+  <depend>roscpp</depend>
+
+  <export>
+    <mavros plugin="${prefix}/mavros_plugins.xml" />
+  </export>
+</package>
